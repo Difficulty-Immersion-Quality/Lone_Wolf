@@ -5,10 +5,13 @@ type "PassiveData"
 data "DisplayName" "h9725de20g112fg4e3eg9401gdf291a8cbf75"
 data "Description" "hfa5f7548g59a7g4ae1ga837g75317d517f7e"
 data "Properties" "Highlighted"
-data "Boosts" ""
-data "BoostContext" ""
-data "StatsFunctors" "IF(HasStatus(GOON_LONE_WOLF_STATUS)):ApplyStatus(GOON_LONE_WOLF_PASSIVE_BUFFS,100,-1)"
-data "StatsFunctorContext" "OnStatusApplied;OnStatusRemoved;OnCreate;OnTurn"
+data "Boosts" "ActionResource(ActionPoint,1,0);ActionResource(BonusActionPoint,1,0);DamageReduction(All,Half);IncreaseMaxHP(30%)"
+data "BoostConditions" "HasStatus('GOON_LONE_WOLF_STATUS',context.Source)"
+data "BoostContext" "OnStatusApplied;OnStatusRemoved"
+
+
+//data "StatsFunctors" "IF(HasStatus(GOON_LONE_WOLF_STATUS)):ApplyStatus(GOON_LONE_WOLF_PASSIVE_BUFFS,100,-1)"
+//data "StatsFunctorContext" "OnStatusApplied;OnStatusRemoved;OnCreate;OnTurn"
 
 
 new entry "GOON_LONE_WOLF_PASSIVE_BUFFS"
