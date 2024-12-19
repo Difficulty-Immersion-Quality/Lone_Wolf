@@ -1,5 +1,5 @@
 local LONE_WOLF_STATUS = "GOON_LONE_WOLF_STATUS"
-local LONE_WOLF_PASSIVE = "Goon_Lone_Wolf_Passive"
+local LONE_WOLF_PASSIVE = "Goon_Lone_Wolf_Passive_Dummy"
 local LONE_WOLF_THRESHOLD = 2 -- Max party size for Lone Wolf to apply
 
 -- Function to update Lone Wolf status for all party members
