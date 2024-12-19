@@ -23,15 +23,4 @@
 
     <content contentuid="he8f49ad5ga0a9g49a9gbb84g293746a1bb2c" version="1">Swole Hands</content>
     <content contentuid="hf96b888fg47a8g40cfgaf0fg62727becf735" version="1">Gain an additional action.</content>
-
-
 </contentList>
-
-<ProgressionDescription>
-	<!-- Gain an additional bonus action. -->
-	<Description>hb3655953g1ce5g489dga54cg809ea8ae167e;1</Description>
-	<!-- Fast Hands -->
-	<DisplayName>h6c4bac51g3ad8g48e3g85f7gc1c2a0e206f9;1</DisplayName>
-	<ExactMatch>ActionResource(BonusActionPoint,1,0)</ExactMatch>
-	<UUID>6e85e076-64e2-42a9-f482-1eff87a21878</UUID>
-</ProgressionDescription>
