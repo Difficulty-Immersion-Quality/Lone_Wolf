@@ -1,0 +1,78 @@
+// ==================================== Main passive ====================================
+
+new entry "Goon_Lone_Wolf_Passive"
+type "PassiveData"
+data "DisplayName" "h9725de20g112fg4e3eg9401gdf291a8cbf75"
+data "Description" "hfa5f7548g59a7g4ae1ga837g75317d517f7e"
+data "Properties" "Highlighted"
+data "Boosts" ""
+data "BoostContext" ""
+data "StatsFunctors" "IF(HasStatus(GOON_LONE_WOLF_STATUS)):ApplyStatus(GOON_LONE_WOLF_PASSIVE_BUFFS,100,-1)"
+data "StatsFunctorContext" "OnStatusApplied;OnStatusRemoved;OnCreate;OnTurn"
+
+
+new entry "GOON_LONE_WOLF_PASSIVE_BUFFS"
+type "StatusData"
+data "StatusType" "BOOST"
+data "Boosts" "ActionResource(ActionPoint,1,0);ActionResource(BonusActionPoint,1,0);DamageReduction(All,Half);IncreaseMaxHP(30%)"
+
+
+//data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog;DisablePortraitIndicator;IgnoreResting;ApplyToDead"
+
+// ==================================== Main passive ====================================
+
+new entry "GOON_LONE_WOLF_STATUS"
+type "StatusData" 
+data "StatusType" "BOOST"
+data "DisplayName" "h9725de20g112fg4e3eg9401gdf291a8cbf75"
+data "Description" "hfa5f7548g59a7g4ae1ga837g75317d517f7e"
+
+// ==================================== Passive selections ====================================
+
+new entry "Goon_Lone_Wolf_Strength"
+type "PassiveData"
+data "DisplayName" "he6cdb9173d0e46e0819cdef6ef5acae5g35a"
+data "Description" "h81b4203172394c4e84b6424b6df8acf34aa6"
+data "Icon" "PassiveFeature_Resilient"
+data "Boosts" "IF(HasStatus(GOON_LONE_WOLF_STATUS)):Ability(Strength,4);IF(HasStatus(GOON_LONE_WOLF_STATUS)):ProficiencyBonus(SavingThrow,Strength)"
+data "BoostContext" "OnStatusApplied;OnStatusRemoved;OnCreate;OnTurn"
+
+new entry "Goon_Lone_Wolf_Dexterity"
+type "PassiveData"
+data "DisplayName" "he6cdb9173d0e46e0819cdef6ef5acae5g35a"
+data "Description" "h81b4203172394c4e84b6424b6df8acf34aa6"
+data "Icon" "PassiveFeature_Resilient"
+data "Boosts" "IF(HasStatus(GOON_LONE_WOLF_STATUS)):Ability(Dexterity,4);IF(HasStatus(GOON_LONE_WOLF_STATUS)):ProficiencyBonus(SavingThrow,Dexterity)"
+data "BoostContext" "OnStatusApplied;OnStatusRemoved;OnCreate;OnTurn"
+
+new entry "Goon_Lone_Wolf_Constitution"
+type "PassiveData"
+data "DisplayName" "he6cdb9173d0e46e0819cdef6ef5acae5g35a"
+data "Description" "h81b4203172394c4e84b6424b6df8acf34aa6"
+data "Icon" "PassiveFeature_Resilient"
+data "Boosts" "IF(HasStatus(GOON_LONE_WOLF_STATUS)):Ability(Constitution,4);IF(HasStatus(GOON_LONE_WOLF_STATUS)):ProficiencyBonus(SavingThrow,Constitution)"
+data "BoostContext" "OnStatusApplied;OnStatusRemoved;OnCreate;OnTurn"
+
+new entry "Goon_Lone_Wolf_Wisdom"
+type "PassiveData"
+data "DisplayName" "he6cdb9173d0e46e0819cdef6ef5acae5g35a"
+data "Description" "h81b4203172394c4e84b6424b6df8acf34aa6"
+data "Icon" "PassiveFeature_Resilient"
+data "Boosts" "IF(HasStatus(GOON_LONE_WOLF_STATUS)):Ability(Wisdom,4);IF(HasStatus(GOON_LONE_WOLF_STATUS)):ProficiencyBonus(SavingThrow,Wisdom)"
+data "BoostContext" "OnStatusApplied;OnStatusRemoved;OnCreate;OnTurn"
+
+new entry "Goon_Lone_Wolf_Intelligence"
+type "PassiveData"
+data "DisplayName" "he6cdb9173d0e46e0819cdef6ef5acae5g35a"
+data "Description" "h81b4203172394c4e84b6424b6df8acf34aa6"
+data "Icon" "PassiveFeature_Resilient"
+data "Boosts" "IF(HasStatus(GOON_LONE_WOLF_STATUS)):Ability(Intelligence,4);IF(HasStatus(GOON_LONE_WOLF_STATUS)):ProficiencyBonus(SavingThrow,Intelligence)"
+data "BoostContext" "OnStatusApplied;OnStatusRemoved;OnCreate;OnTurn"
+
+new entry "Goon_Lone_Wolf_Charisma"
+type "PassiveData"
+data "DisplayName" "he6cdb9173d0e46e0819cdef6ef5acae5g35a"
+data "Description" "h81b4203172394c4e84b6424b6df8acf34aa6"
+data "Icon" "PassiveFeature_Resilient"
+data "Boosts" "IF(HasStatus(GOON_LONE_WOLF_STATUS)):Ability(Charisma,4);IF(HasStatus(GOON_LONE_WOLF_STATUS)):ProficiencyBonus(SavingThrow,Charisma)"
+data "BoostContext" "OnStatusApplied;OnStatusRemoved;OnCreate;OnTurn"

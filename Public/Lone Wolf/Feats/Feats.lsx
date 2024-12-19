@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="322"/>
+    <region id="Feats">
+        <node id="root">
+            <children>
+                <node id="Feat">
+                    <attribute id="CanBeTakenMultipleTimes" type="bool" value="false"/>
+                    <attribute id="Name" type="FixedString" value="Goon_Lone_Wolf"/>
+                    <attribute id="PassivesAdded" type="LSString" value="Goon_Lone_Wolf_Passive"/>
+                    <attribute id="Requirements" type="LSString" value=""/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(739868af-83b9-45d9-9b62-d0b0e3079404,2)"/>
+                    <attribute id="UUID" type="guid" value="1c39d309-d02b-40ce-9c93-8cab37a0dabf"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

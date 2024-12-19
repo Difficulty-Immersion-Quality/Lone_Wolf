@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="3" revision="0" build="302"/>
+    <region id="FeatDescriptions">
+        <node id="root">
+            <children>
+                <node id="FeatDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h672a5a99gaa66g497bg874bga1d599ec4363" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="hbf3e51aeg2627g44bag9160ga29eb4053184" version="1"/>
+                    <attribute id="ExactMatch" type="FixedString" value="Goon_Lone_Wolf"/>
+                    <attribute id="FeatId" type="guid" value="1c39d309-d02b-40ce-9c93-8cab37a0dabf"/>
+                    <attribute id="UUID" type="guid" value="89fd602a-a12d-408a-9dc0-7ddf353ef303"/>
+                </node>
+                <node id="FeatDescription">
+                    <attribute id="DisplayName" type="TranslatedString" handle="h672a5a99gaa66g497bg874bga1d599ec4363" version="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="hbf3e51aeg2627g44bag9160ga29eb4053184" version="1"/>
+                    <attribute id="ExactMatch" type="FixedString" value="Goon Lone Wolf Passives"/>
+                    <attribute id="FeatId" type="guid" value="1c39d309-d02b-40ce-9c93-8cab37a0dabf"/>
+                    <attribute id="UUID" type="guid" value="c2f288e5-17e5-48bf-86c2-dfee8e62afdd"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>
