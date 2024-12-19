@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="319"/>
+    <region id="ProgressionDescriptions">
+        <node id="root">
+            <children>
+                <node id="ProgressionDescription">
+                    <!-- Swole Hands -->
+                    <DisplayName>he8f49ad5ga0a9g49a9gbb84g293746a1bb2c</DisplayName>
+                    <!-- Gain an additional action. -->
+                    <Description>hf96b888fg47a8g40cfgaf0fg62727becf735</Description>
+                    <ExactMatch>ActionResource(ActionPoint,1,0)</ExactMatch>
+                    <UUID>3adbc12b-40a9-409a-bfdf-d209d537c8e5</UUID>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

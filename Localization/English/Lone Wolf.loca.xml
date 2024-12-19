@@ -4,7 +4,7 @@
 
     <content contentuid="h122e0e0cg761fg412agb2a1ge0a51f6f13e1" version="1">[1] [2] [3] [4]</content>
 
-    <content contentuid="hfa5f7548g59a7g4ae1ga837g75317d517f7e" version="1">ggggggggggggg</content>
+    <content contentuid="hfa5f7548g59a7g4ae1ga837g75317d517f7e" version="1">Passive berberbvevewrv</content>
 
     <content contentuid="h6671497ega058g42a6g9530g076a99988b30" version="1">ffffffffffffffff</content>
 
@@ -20,4 +20,18 @@
     <content contentuid="h9c84f6abgbb00g426dgaeeag0100922fcff0" version="1">Deez nuts Feat</content>
     <content contentuid="hb3f7c42eg5160g417cgb9a9g0cd755e9d79f" version="1">Lone Wolf: Charisma</content>
     <content contentuid="h3dd93a48g8d33g45c6gad7bg731df520cb18" version="1">Deez nuts Feat</content>
+
+    <content contentuid="he8f49ad5ga0a9g49a9gbb84g293746a1bb2c" version="1">Swole Hands</content>
+    <content contentuid="hf96b888fg47a8g40cfgaf0fg62727becf735" version="1">Gain an additional action.</content>
+
+
 </contentList>
+
+<ProgressionDescription>
+	<!-- Gain an additional bonus action. -->
+	<Description>hb3655953g1ce5g489dga54cg809ea8ae167e;1</Description>
+	<!-- Fast Hands -->
+	<DisplayName>h6c4bac51g3ad8g48e3g85f7gc1c2a0e206f9;1</DisplayName>
+	<ExactMatch>ActionResource(BonusActionPoint,1,0)</ExactMatch>
+	<UUID>6e85e076-64e2-42a9-f482-1eff87a21878</UUID>
+</ProgressionDescription>
