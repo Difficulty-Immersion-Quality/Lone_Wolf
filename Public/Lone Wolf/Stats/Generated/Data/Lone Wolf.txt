@@ -18,6 +18,9 @@ data "StatusType" "BOOST"
 data "DisplayName" ""
 data "Description" ""
 data "Icon" ""
+data "StackId" "GOON_LONE_WOLF_STATUS"
+data "StackPriority" "1"
+data "StackType" "Ignore"
 data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog;DisablePortraitIndicator;IgnoreResting;ApplyToDead"
 
 // ==================================== Passive selections ====================================
@@ -76,5 +79,36 @@ data "Boosts" "Ability(Charisma,4);ProficiencyBonus(SavingThrow,Charisma)"
 data "BoostConditions" "HasStatus('GOON_LONE_WOLF_STATUS',context.Source)"
 data "BoostContext" "OnStatusApplied;OnStatusRemoved"
 
-// ==================================== Dummy entries ====================================
+// ==================================== PassivePrototypes ====================================
 
+new entry "Goon_Lone_Wolf_Extra_Action"
+type "PassiveData"
+data "DisplayName" "h3e587d75g3c91g46c3gbb02gd1998fd0b733"
+data "Description" "h51eece17g6934g4c98gbdc2gaf1ef578aec8"
+data "DescriptionParams" ""
+data "Properties" "Highlighted"
+data "Boosts" "ActionResource(ActionPoint,1,0)"
+
+new entry "Goon_Lone_Wolf_Extra_Bonus_Action"
+type "PassiveData"
+data "DisplayName" "h9df0612agc0a7g4529gbd11g3d0bae9959c0"
+data "Description" "h21cc93c3gac00g4651g9cb3g1d54466a0ba9"
+data "DescriptionParams" ""
+data "Properties" "Highlighted"
+data "Boosts" "ActionResource(BonusActionPoint,1,0)""
+
+new entry "Goon_Lone_Wolf_Extra_HP"
+type "PassiveData"
+data "DisplayName" "h3f14bfc5g86dag459fga826g4520a0c29b77"
+data "Description" "h9bae2493g4012g4120ga4c4gc255359268fb"
+data "DescriptionParams" "30%"
+data "Properties" "Highlighted"
+data "Boosts" "IncreaseMaxHP(30%)"
+
+new entry "Goon_Lone_Wolf_Extra_DR"
+type "PassiveData"
+data "DisplayName" "h5b028bfagd71dg4c43g9ac3ga96282c009da"
+data "Description" "h086dd109gcbdbg4d36gbf9cg6e402b7d1e92"
+data "DescriptionParams" ""
+data "Properties" "Highlighted"
+data "Boosts" "DamageReduction(All,Half)"
