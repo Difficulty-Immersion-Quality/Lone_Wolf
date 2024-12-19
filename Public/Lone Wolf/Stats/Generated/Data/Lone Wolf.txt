@@ -16,6 +16,7 @@ type "StatusData"
 data "StatusType" "BOOST"
 data "DisplayName" ""
 data "Description" ""
+data "Icon" ""
 data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog;DisablePortraitIndicator;IgnoreResting;ApplyToDead"
 
 // ==================================== Passive selections ====================================
