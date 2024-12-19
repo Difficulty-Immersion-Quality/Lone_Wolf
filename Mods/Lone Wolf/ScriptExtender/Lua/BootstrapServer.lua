@@ -69,7 +69,7 @@ end)
 -- Function to update Lone Wolf status after a delay after levelling up, copium that it works
 local function DelayedUpdateLoneWolfStatus(character)
     Ext.Utils.Print(string.format("Waiting to update Lone Wolf status for character: %s", character))
-    Ext.Timer.Start(500, function()
+    Ext.Timer.WaitFor(500, function()
         Ext.Utils.Print("Event triggered: LeveledUp (Delayed)")
         UpdateLoneWolfStatus()
     end)
@@ -79,10 +79,4 @@ end
 Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
     Ext.Utils.Print("Event triggered: LeveledUp")
     DelayedUpdateLoneWolfStatus(character)
-end)
-
--- Relevant?
-Ext.Osiris.RegisterListener("NotifyCharacterCreationFinished", 1, "after", function(character)
-    Ext.Utils.Print("Event triggered: NotifyCharacterCreationFinished")
-    UpdateLoneWolfStatus()
 end)
