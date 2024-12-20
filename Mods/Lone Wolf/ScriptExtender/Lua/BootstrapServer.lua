@@ -3,6 +3,20 @@ local LONE_WOLF_PASSIVE = "Goon_Lone_Wolf_Passive_Dummy"
 local LONE_WOLF_THRESHOLD = 2 -- Max party size for Lone Wolf to apply
 local isUpdating = false -- Prevent recursive calls
 
+local loneWolfStatBoosts = {
+    Goon_Lone_Wolf_Strength = "Ability(Strength,4);ProficiencyBonus(SavingThrow,Strength)",
+    Goon_Lone_Wolf_Dexterity = "Ability(Dexterity,4);ProficiencyBonus(SavingThrow,Dexterity)",
+    Goon_Lone_Wolf_Constitution = "Ability(Constitution,4);ProficiencyBonus(SavingThrow,Constitution)",
+    Goon_Lone_Wolf_Intelligence = "Ability(Intelligence,4);ProficiencyBonus(SavingThrow,Intelligence)",
+    Goon_Lone_Wolf_Wisdom = "Ability(Wisdom,4);ProficiencyBonus(SavingThrow,Wisdom)",
+    Goon_Lone_Wolf_Charisma = "Ability(Charisma,4);ProficiencyBonus(SavingThrow,Charisma)"
+}
+
+local loneWolfBoosts = {
+    ExtraHP = "IncreaseMaxHP(30%)",
+    DamageReduction = "DamageReduction(All,Half)",
+}
+
 -- Function to update Lone Wolf status for all party members
 local function UpdateLoneWolfStatus()
     if isUpdating then
@@ -35,19 +49,46 @@ local function UpdateLoneWolfStatus()
                 if not hasStatus then
                     Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Applying Lone Wolf status to %s", charID))
                     Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1, 1) -- Apply status indefinitely
+                    for boostName, boost in pairs(loneWolfBoosts) do
+                        Ext.Utils.Print(string.format("Applying %s boost to %s", boostName, charID))
+                        Osi.AddBoosts(charID, boost, charID, charID)
+                    end
                 else
                     Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Lone Wolf status already active on %s", charID))
+                end
+
+                for passive, boost in pairs(loneWolfStatBoosts) do
+                    if Osi.HasPassive(charID, passive) == 1 then
+                        Ext.Utils.Print(string.format("Applying boost for passive %s to %s", passive, charID))
+                        Osi.AddBoosts(charID, boost, charID, charID)
+                    end
                 end
             else
                 if hasStatus then
                     Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Removing Lone Wolf status from %s (party size exceeded threshold)", charID))
                     Osi.RemoveStatus(charID, LONE_WOLF_STATUS)
+                    for boostName, boost in pairs(loneWolfBoosts) do
+                        Ext.Utils.Print(string.format("Removing %s boost from %s", boostName, charID))
+                        Osi.RemoveBoosts(charID, boost, 0, charID, charID)
+                    end
+                    for passive, boost in pairs(loneWolfStatBoosts) do
+                        Ext.Utils.Print(string.format("Removing boost for passive %s from %s", passive, charID))
+                        Osi.RemoveBoosts(charID, boost, 0, charID, charID)
+                    end
                 end
             end
         else
             if hasStatus then
                 Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Removing Lone Wolf status from %s (missing passive)", charID))
                 Osi.RemoveStatus(charID, LONE_WOLF_STATUS)
+                for boostName, boost in pairs(loneWolfBoosts) do
+                    Ext.Utils.Print(string.format("Removing %s boost from %s", boostName, charID))
+                    Osi.RemoveBoosts(charID, boost, 0, charID, charID)
+                end
+                for passive, boost in pairs(loneWolfStatBoosts) do
+                    Ext.Utils.Print(string.format("Removing boost for passive %s from %s", passive, charID))
+                    Osi.RemoveBoosts(charID, boost, 0, charID, charID)
+                end
             end
         end
     end
