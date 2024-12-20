@@ -18,6 +18,8 @@ data "Icon" "Skill_Druid_WildShape_DireWolf"
 data "DescriptionParams" "30%;4"
 data "Properties" "Highlighted"
 
+//data "Boosts" "IF(HasPassive(Goon_Lone_Wolf_Strength)):Ability(Strength,4);IF(HasPassive(Goon_Lone_Wolf_Strength)):ProficiencyBonus(SavingThrow,Strength);IF(HasPassive(Goon_Lone_Wolf_Dexterity)):Ability(Dexterity,4);IF(HasPassive(Goon_Lone_Wolf_Dexterity)):ProficiencyBonus(SavingThrow,Dexterity);IF(HasPassive(Goon_Lone_Wolf_Constitution)):Ability(Constitution,4);IF(HasPassive(Goon_Lone_Wolf_Constitution)):ProficiencyBonus(SavingThrow,Constitution);IF(HasPassive(Goon_Lone_Wolf_Intelligence)):Ability(Intelligence,4);IF(HasPassive(Goon_Lone_Wolf_Intelligence)):ProficiencyBonus(SavingThrow,Intelligence);IF(HasPassive(Goon_Lone_Wolf_Wisdom)):Ability(Wisdom,4);IF(HasPassive(Goon_Lone_Wolf_Wisdom)):ProficiencyBonus(SavingThrow,Wisdom);IF(HasPassive(Goon_Lone_Wolf_Charisma)):Ability(Charisma,4);IF(HasPassive(Goon_Lone_Wolf_Charisma)):ProficiencyBonus(SavingThrow,Charisma)"
+
 //DisableOverhead;DisableCombatlog;DisablePortraitIndicator
 
 // ==================================== SE status ====================================
@@ -33,8 +35,7 @@ data "StackPriority" "20"
 data "StackType" "Ignore"
 data "StatusPropertyFlags" "IgnoreResting;ApplyToDead"
 data "StatusGroups" "SG_RemoveOnRespec"
-data "OnApplyFunctors" "IF(HasPassive('Goon_Lone_Wolf_Passive_Dummy',context.Source)):ApplyStatus('GOON_LONE_WOLF_PASSIVE_DUMMY_STATUS',100,-1)"
-data "Boosts" "IF(HasPassive(Goon_Lone_Wolf_Strength)):Ability(Strength,4);IF(HasPassive(Goon_Lone_Wolf_Strength)):ProficiencyBonus(SavingThrow,Strength);IF(HasPassive(Goon_Lone_Wolf_Dexterity)):Ability(Dexterity,4);IF(HasPassive(Goon_Lone_Wolf_Dexterity)):ProficiencyBonus(SavingThrow,Dexterity);IF(HasPassive(Goon_Lone_Wolf_Constitution)):Ability(Constitution,4);IF(HasPassive(Goon_Lone_Wolf_Constitution)):ProficiencyBonus(SavingThrow,Constitution);IF(HasPassive(Goon_Lone_Wolf_Intelligence)):Ability(Intelligence,4);IF(HasPassive(Goon_Lone_Wolf_Intelligence)):ProficiencyBonus(SavingThrow,Intelligence);IF(HasPassive(Goon_Lone_Wolf_Wisdom)):Ability(Wisdom,4);IF(HasPassive(Goon_Lone_Wolf_Wisdom)):ProficiencyBonus(SavingThrow,Wisdom);IF(HasPassive(Goon_Lone_Wolf_Charisma)):Ability(Charisma,4);IF(HasPassive(Goon_Lone_Wolf_Charisma)):ProficiencyBonus(SavingThrow,Charisma)"
+data "OnApplyFunctors" "IF(HasPassive('Goon_Lone_Wolf_Passive_Dummy')):ApplyStatus(GOON_LONE_WOLF_PASSIVE_DUMMY_STATUS,100,-1)"
 
 new entry "GOON_LONE_WOLF_PASSIVE_DUMMY_STATUS"
 type "StatusData" 
