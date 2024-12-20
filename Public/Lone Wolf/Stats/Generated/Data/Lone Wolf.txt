@@ -41,7 +41,12 @@ new entry "GOON_LONE_WOLF_PASSIVE_DUMMY_STATUS"
 type "StatusData" 
 data "StatusType" "BOOST"
 data "StatusPropertyFlags" "IgnoreResting;ApplyToDead;DisableOverhead;DisableCombatlog;DisablePortraitIndicator"
-data "Boosts" "IncreaseMaxHP(30%);DamageReduction(All,Half);ActionResource(BonusActionPoint,1,0);ActionResource(ActionPoint,1,0)"
+data "Boosts" "ActionResource(BonusActionPoint,1,0);ActionResource(ActionPoint,1,0)"
+data "Passives" "GOON_LONE_WOLF_PASSIVE_DUMMY_STATUS_Passive"
+
+new entry "GOON_LONE_WOLF_PASSIVE_DUMMY_STATUS_Passive"
+type "PassiveData"
+data "Boosts" "IncreaseMaxHP(30%);DamageReduction(All,Half)"
 
 // ==================================== Passive selections ====================================
 
