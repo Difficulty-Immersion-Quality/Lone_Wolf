@@ -34,7 +34,7 @@ local function UpdateLoneWolfStatus()
             if partySize <= LONE_WOLF_THRESHOLD then
                 if not hasStatus then
                     Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Applying Lone Wolf status to %s", charID))
-                    Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1) -- Apply status indefinitely
+                    Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1, 1) -- Apply status indefinitely
                 else
                     Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Lone Wolf status already active on %s", charID))
                 end
@@ -76,7 +76,7 @@ end)
 -- Function to update Lone Wolf status after a delay for level-ups
 local function DelayedUpdateLoneWolfStatus(character)
     Ext.Utils.Print(string.format("[DelayedUpdateLoneWolfStatus] Waiting to update Lone Wolf status for character: %s", character))
-    Ext.Timer.Start(500, function()
+    Ext.Timer.WaitFor(500, function()
         Ext.Utils.Print("[DelayedUpdateLoneWolfStatus] Event triggered: LeveledUp (Delayed)")
         UpdateLoneWolfStatus()
     end)
