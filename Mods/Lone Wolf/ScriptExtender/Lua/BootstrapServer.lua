@@ -9,39 +9,34 @@ local function UpdateLoneWolfStatus()
 
     Ext.Utils.Print(string.format("Total party members: %d", partySize))
 
-    -- Apply or remove the status based on party size and passive prerequisite
+    -- Loop through all party members
     for _, member in pairs(partyMembers) do
         local charID = member[1]
         Ext.Utils.Print(string.format("Processing character: %s", charID))
 
         -- Check if character has the Lone Wolf passive
-        local hasPassive = Osi.HasPassive(charID, LONE_WOLF_PASSIVE)
-        if hasPassive == 1 then -- Explicitly check if passive exists
-            Ext.Utils.Print(string.format("Character %s has the Lone Wolf passive.", charID))
-        else
-            Ext.Utils.Print(string.format("Character %s does not have the Lone Wolf passive.", charID))
-        end
+        local hasPassive = Osi.HasPassive(charID, LONE_WOLF_PASSIVE) == 1
+        local hasStatus = Osi.HasActiveStatus(charID, LONE_WOLF_STATUS) == 1
 
-        -- If character has the Lone Wolf passive, apply the status if party size is <= threshold
-        if hasPassive == 1 then
+        if hasPassive then
+            Ext.Utils.Print(string.format("Character %s has the Lone Wolf passive.", charID))
+
+            -- Apply or remove status based on party size
             if partySize <= LONE_WOLF_THRESHOLD then
-                -- Check if Lone Wolf status is not active, then apply it
-                if Osi.HasActiveStatus(charID, LONE_WOLF_STATUS) == 0 then
+                if not hasStatus then
                     Ext.Utils.Print(string.format("Applying Lone Wolf status to %s", charID))
-                    Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1) -- Apply status for 99999 seconds
+                    Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1) -- Apply status indefinitely
                 else
                     Ext.Utils.Print(string.format("Lone Wolf status already active on %s", charID))
                 end
             else
-                -- If the party size exceeds the threshold, remove the status
-                if Osi.HasActiveStatus(charID, LONE_WOLF_STATUS) == 1 then
+                if hasStatus then
                     Ext.Utils.Print(string.format("Removing Lone Wolf status from %s (party size exceeded threshold)", charID))
                     Osi.RemoveStatus(charID, LONE_WOLF_STATUS)
                 end
             end
         else
-            -- If character doesn't have the Lone Wolf passive, remove the status
-            if Osi.HasActiveStatus(charID, LONE_WOLF_STATUS) == 1 then
+            if hasStatus then
                 Ext.Utils.Print(string.format("Removing Lone Wolf status from %s (missing passive)", charID))
                 Osi.RemoveStatus(charID, LONE_WOLF_STATUS)
             end
