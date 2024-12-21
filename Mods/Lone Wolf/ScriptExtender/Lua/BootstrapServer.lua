@@ -29,6 +29,7 @@ local loneWolfBoosts = {
 }
 
 -- Function to update Lone Wolf status for all party members
+-- Function to update Lone Wolf status for all party members
 local function UpdateLoneWolfStatus()
     if isUpdating then
         Ext.Utils.Print("[UpdateLoneWolfStatus] Update already in progress. Skipping.")
@@ -39,13 +40,23 @@ local function UpdateLoneWolfStatus()
     Ext.Utils.Print("[UpdateLoneWolfStatus] Starting update...")
 
     local partyMembers = Osi.DB_PartyMembers:Get(nil)
-    local partySize = #partyMembers -- Count total party members
+    local validPartyMembers = {} -- Table to hold valid party members
 
-    Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Total party members: %d", partySize))
-
-    -- Loop through all party members
+    -- Filter out characters with the excluded tag
     for _, member in pairs(partyMembers) do
         local charID = member[1]
+        if not Osi.HasTag(charID, "OCS_ObjectCharacter") then
+            table.insert(validPartyMembers, charID)
+        else
+            Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Excluding character %s due to tag OCS_ObjectCharacter", charID))
+        end
+    end
+
+    local partySize = #validPartyMembers -- Count valid party members
+    Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Total valid party members: %d", partySize))
+
+    -- Loop through valid party members
+    for _, charID in ipairs(validPartyMembers) do
         Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Processing character: %s", charID))
 
         -- Check if character has the Lone Wolf passive
