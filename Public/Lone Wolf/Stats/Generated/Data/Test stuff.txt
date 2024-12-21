@@ -1,0 +1,21 @@
+// ==================================== Commented out test stuff ====================================
+
+//new entry "Goon_Lone_Wolf_Passive"
+//type "PassiveData"
+//data "DisplayName" "h9725de20g112fg4e3eg9401gdf291a8cbf75"
+//data "Description" "hfa5f7548g59a7g4ae1ga837g75317d517f7e"
+//data "DescriptionParams" "ActionResource(ActionPoint,1,0);ActionResource(BonusActionPoint,1,0);DamageReduction(All,Half);IncreaseMaxHP(30%)"
+//data "Properties" "Highlighted"
+//data "Boosts" "ActionResource(ActionPoint,1,0);ActionResource(BonusActionPoint,1,0);DamageReduction(All,Half);IncreaseMaxHP(30%)"
+//data "BoostConditions" "HasStatus('GOON_LONE_WOLF_STATUS',context.Source)"
+//data "BoostContext" "OnStatusApplied;OnStatusApply;OnStatusRemoved;OnDamaged;OnDamage;OnAttacked;OnAttack;OnMovedDistance;OnEquip;OnCreate;OnHeal"
+
+//data "Boosts" "IF(HasPassive(Goon_Lone_Wolf_Strength)):Ability(Strength,4);IF(HasPassive(Goon_Lone_Wolf_Strength)):ProficiencyBonus(SavingThrow,Strength);IF(HasPassive(Goon_Lone_Wolf_Dexterity)):Ability(Dexterity,4);IF(HasPassive(Goon_Lone_Wolf_Dexterity)):ProficiencyBonus(SavingThrow,Dexterity);IF(HasPassive(Goon_Lone_Wolf_Constitution)):Ability(Constitution,4);IF(HasPassive(Goon_Lone_Wolf_Constitution)):ProficiencyBonus(SavingThrow,Constitution);IF(HasPassive(Goon_Lone_Wolf_Intelligence)):Ability(Intelligence,4);IF(HasPassive(Goon_Lone_Wolf_Intelligence)):ProficiencyBonus(SavingThrow,Intelligence);IF(HasPassive(Goon_Lone_Wolf_Wisdom)):Ability(Wisdom,4);IF(HasPassive(Goon_Lone_Wolf_Wisdom)):ProficiencyBonus(SavingThrow,Wisdom);IF(HasPassive(Goon_Lone_Wolf_Charisma)):Ability(Charisma,4);IF(HasPassive(Goon_Lone_Wolf_Charisma)):ProficiencyBonus(SavingThrow,Charisma)"
+
+//DisableOverhead;DisableCombatlog;DisablePortraitIndicator
+
+//new entry "GOON_LONE_WOLF_PASSIVE_DUMMY_STATUS_Passive"
+//type "PassiveData"
+//data "Boosts" "IncreaseMaxHP(30%);DamageReduction(All,Half)"
+
+//data "Passives" "GOON_LONE_WOLF_PASSIVE_DUMMY_STATUS_Passive"

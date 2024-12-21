@@ -1,38 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <save>
-    <version major="4" minor="5" revision="0" build="0"/>
-    <region id="ProgressionDescriptions">
-        <node id="root">
-            <children>
-                <node id="ProgressionDescription">
-                    <attribute id="DisplayName" type="TranslatedString" handle="h3e587d75g3c91g46c3gbb02gd1998fd0b733" version="1"/>
-                    <attribute id="Description" type="TranslatedString" handle="h51eece17g6934g4c98gbdc2gaf1ef578aec8" version="1"/>
-                    <attribute id="ExactMatch" type="FixedString" value=""/>
-                    <attribute id="PassivePrototype" type="FixedString" value="Goon_Lone_Wolf_Extra_Action"/>
-                    <attribute id="UUID" type="guid" value="32ff8128-4b9a-4c88-9f58-3b5327d775f7"/>
+  <version major="4" minor="0" revision="9" build="328" />
+  <region id="ProgressionDescriptions">
+    <node id="root">
+      <children>
+        <node id="ProgressionDescription">
+                    <attribute id="DisplayName" type="TranslatedString" handle="h3e587d75g3c91g46c3gbb02gd1998fd0b733" version="1" />
+                    <attribute id="Description" type="TranslatedString" handle="h51eece17g6934g4c98gbdc2gaf1ef578aec8" version="1" />
+                    <attribute id="ExactMatch" type="FixedString" value="" />
+                    <attribute id="PassivePrototype" type="FixedString" value="Goon_Lone_Wolf_Extra_Action" />
+                    <attribute id="UUID" type="guid" value="32ff8128-4b9a-4c88-9f58-3b5327d775f7" />
                 </node>
-                <node id="ProgressionDescription">
-                    <attribute id="DisplayName" type="TranslatedString" handle="h9df0612agc0a7g4529gbd11g3d0bae9959c0" version="1"/>
-                    <attribute id="Description" type="TranslatedString" handle="h21cc93c3gac00g4651g9cb3g1d54466a0ba9" version="1"/>
-                    <attribute id="ExactMatch" type="FixedString" value=""/>
-                    <attribute id="PassivePrototype" type="FixedString" value="Goon_Lone_Wolf_Extra_Bonus_Action"/>
-                    <attribute id="UUID" type="guid" value="6c4ef318-20e3-4778-8be8-2be7e6432870"/>
+        <node id="ProgressionDescription">
+                    <attribute id="DisplayName" type="TranslatedString" handle="h9df0612agc0a7g4529gbd11g3d0bae9959c0" version="1" />
+                    <attribute id="Description" type="TranslatedString" handle="h21cc93c3gac00g4651g9cb3g1d54466a0ba9" version="1" />
+                    <attribute id="ExactMatch" type="FixedString" value="" />
+                    <attribute id="PassivePrototype" type="FixedString" value="Goon_Lone_Wolf_Extra_Bonus_Action" />
+                    <attribute id="UUID" type="guid" value="6c4ef318-20e3-4778-8be8-2be7e6432870" />
                 </node>
-                <node id="ProgressionDescription">
-                    <attribute id="DisplayName" type="TranslatedString" handle="h5b028bfagd71dg4c43g9ac3ga96282c009da" version="1"/>
-                    <attribute id="Description" type="TranslatedString" handle="h086dd109gcbdbg4d36gbf9cg6e402b7d1e92" version="1"/>
-                    <attribute id="ExactMatch" type="FixedString" value=""/>
-                    <attribute id="PassivePrototype" type="FixedString" value="Goon_Lone_Wolf_Extra_DR"/>
-                    <attribute id="UUID" type="guid" value="5b215da1-c65a-422a-b9a1-4ad1dcc385a9"/>
+        <node id="ProgressionDescription">
+                    <attribute id="DisplayName" type="TranslatedString" handle="h5b028bfagd71dg4c43g9ac3ga96282c009da" version="1" />
+                    <attribute id="Description" type="TranslatedString" handle="h086dd109gcbdbg4d36gbf9cg6e402b7d1e92" version="1" />
+                    <attribute id="ExactMatch" type="FixedString" value="" />
+                    <attribute id="PassivePrototype" type="FixedString" value="Goon_Lone_Wolf_Extra_DR" />
+                    <attribute id="UUID" type="guid" value="5b215da1-c65a-422a-b9a1-4ad1dcc385a9" />
                 </node>
-                <node id="ProgressionDescription">
-                    <attribute id="DisplayName" type="TranslatedString" handle="h3f14bfc5g86dag459fga826g4520a0c29b77" version="1"/>
-                    <attribute id="Description" type="TranslatedString" handle="h9bae2493g4012g4120ga4c4gc255359268fb" version="1"/>
-                    <attribute id="ExactMatch" type="FixedString" value=""/>
-                    <attribute id="PassivePrototype" type="FixedString" value="Goon_Lone_Wolf_Extra_HP"/>
-                    <attribute id="UUID" type="guid" value="170a2da5-ea5c-4e03-8868-9f43debfd548"/>
+        <node id="ProgressionDescription">
+                    <attribute id="DisplayName" type="TranslatedString" handle="h3f14bfc5g86dag459fga826g4520a0c29b77" version="1" />
+                    <attribute id="Description" type="TranslatedString" handle="h9bae2493g4012g4120ga4c4gc255359268fb" version="1" />
+                    <attribute id="ExactMatch" type="FixedString" value="" />
+                    <attribute id="PassivePrototype" type="FixedString" value="Goon_Lone_Wolf_Extra_HP" />
+                    <attribute id="UUID" type="guid" value="170a2da5-ea5c-4e03-8868-9f43debfd548" />
                 </node>
-            </children>
-        </node>
-    </region>
+      </children>
+    </node>
+  </region>
 </save>

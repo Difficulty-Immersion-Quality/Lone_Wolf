@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <save>
-    <version major="4" minor="7" revision="1" build="0"/>
-    <region id="PassiveLists">
-        <node id="root">
-            <children>
-                <node id="PassiveList">
-                    <attribute id="Passives" type="LSString" value="Goon_Lone_Wolf_Strength,Goon_Lone_Wolf_Dexterity,Goon_Lone_Wolf_Constitution,Goon_Lone_Wolf_Wisdom,Goon_Lone_Wolf_Intelligence,Goon_Lone_Wolf_Charisma"/>
-                    <attribute id="UUID" type="guid" value="739868af-83b9-45d9-9b62-d0b0e3079404"/>
+  <version major="4" minor="0" revision="9" build="328" />
+  <region id="PassiveLists">
+    <node id="root">
+      <children>
+        <node id="PassiveList">
+                    <attribute id="Passives" type="LSString" value="Goon_Lone_Wolf_Strength,Goon_Lone_Wolf_Dexterity,Goon_Lone_Wolf_Constitution,Goon_Lone_Wolf_Wisdom,Goon_Lone_Wolf_Intelligence,Goon_Lone_Wolf_Charisma" />
+                    <attribute id="UUID" type="guid" value="739868af-83b9-45d9-9b62-d0b0e3079404" />
                 </node>
-            </children>
-        </node>
-    </region>
+      </children>
+    </node>
+  </region>
 </save>
