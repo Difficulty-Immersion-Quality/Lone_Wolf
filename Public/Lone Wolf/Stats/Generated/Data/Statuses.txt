@@ -13,6 +13,20 @@ data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog;DisablePortraitIndi
 data "StatusGroups" "SG_RemoveOnRespec"
 data "Boosts" "ActionResource(BonusActionPoint,1,0);ActionResource(ActionPoint,1,0)"
 
+// ==================================== Buff statuses ====================================
+
+new entry "GOON_LONE_WOLF_SE_BUFFS"
+type "StatusData" 
+data "StatusType" "BOOST"
+data "DisplayName" "h3f14bfc5g86dag459fga826g4520a0c29b77"
+data "Description" "h9bae2493g4012g4120ga4c4gc255359268fb"
+data "StackId" "GOON_LONE_WOLF_EXTRA_HP"
+data "StackPriority" "20"
+data "StackType" "Ignore"
+data "StatusPropertyFlags" "IgnoreResting;ApplyToDead;DisableOverhead;DisableCombatlog;DisablePortraitIndicator"
+data "Boosts" ""
+data "StatusGroups" "SG_RemoveOnRespec"
+
 // ==================================== Ability increase statuses ====================================
 
 new entry "GOON_LONE_WOLF_STRENGTH_STATUS"
