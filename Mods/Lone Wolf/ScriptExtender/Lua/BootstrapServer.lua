@@ -43,25 +43,20 @@ local function removeLoneWolfBoosts(charID)
 end
 
 local function updateLoneWolfStatus()
-    local partyMembers = Osi.DB_PartyMembers:Get(nil)
     local Players = Osi.DB_Players:Get(nil)
-    local validPartyMembers = {}
+    local validPlayers = {}
 
-    -- Identify valid players in the party
-    for _, member in pairs(partyMembers) do
-        local charID = member[1]
-        for _, playerEntry in pairs(Players) do
-            if charID == playerEntry[1] then
-                table.insert(validPartyMembers, charID)
-                Ext.Utils.Print(string.format("[DEBUG] Valid player: %s", charID))
-            end
-        end
+    -- Identify valid players
+    for _, playerEntry in pairs(Players) do
+        local charID = playerEntry[1]
+        table.insert(validPlayers, charID)
+        Ext.Utils.Print(string.format("[DEBUG] Valid player: %s", charID))
     end
 
-    local partySize = #validPartyMembers
+    local partySize = #validPlayers
 
-    -- Process each valid party member
-    for _, charID in pairs(validPartyMembers) do
+    -- Process each valid player
+    for _, charID in pairs(validPlayers) do
         local hasPassive = Osi.HasPassive(charID, LONE_WOLF_PASSIVE) == 1
         local hasStatus = Osi.HasActiveStatus(charID, LONE_WOLF_STATUS) == 1
 
