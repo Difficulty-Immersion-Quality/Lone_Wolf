@@ -1,6 +1,5 @@
 local LONE_WOLF_STATUS = "GOON_LONE_WOLF_STATUS"
 local LONE_WOLF_PASSIVE = "Goon_Lone_Wolf_Passive_Dummy"
-local LONE_WOLF_SE_BUFFS = "GOON_LONE_WOLF_SE_BUFFS"
 local LONE_WOLF_THRESHOLD = 2 -- Max party size for Lone Wolf to apply
 local isUpdating = false -- Prevent recursive calls
 
@@ -32,16 +31,22 @@ local function ApplyStatBoosts(charID)
         { passive = "Goon_Lone_Wolf_Intelligence", status = "GOON_LONE_WOLF_INTELLIGENCE_STATUS" },
         { passive = "Goon_Lone_Wolf_Wisdom", status = "GOON_LONE_WOLF_WISDOM_STATUS" },
         { passive = "Goon_Lone_Wolf_Charisma", status = "GOON_LONE_WOLF_CHARISMA_STATUS" },
+        { status = "GOON_LONE_WOLF_SE_BUFFS", boost = "IncreaseMaxHP(30%)" },
+        { status = "GOON_LONE_WOLF_SE_BUFFS", boost = "DamageReduction(All,Half)" },
     }
 
-    -- Handle stat boosts based on passives and statuses
-    for _, boost in ipairs(statBoosts) do
-        if Osi.HasPassive(charID, boost.passive) == 1 then
-            -- Apply status if passive exists
-            Osi.ApplyStatus(charID, boost.status, -1, 1) -- Apply status indefinitely
-        else
-            -- Remove status if passive doesn't exist
-            Osi.RemoveStatus(charID, boost.status)
+    for _, entry in ipairs(statBoosts) do
+        if entry.passive then
+            -- Handle passive-based statuses
+            if Osi.HasPassive(charID, entry.passive) == 1 then
+                Osi.ApplyStatus(charID, entry.status, -1, 1)
+            end
+        elseif entry.status then
+            -- Handle status-based boosts
+            if Osi.HasActiveStatus(charID, entry.status) == 1 then
+                Ext.Utils.Print("[ApplyStatBoosts] Applying boost:", entry.boost, "to", charID)
+                Osi.AddBoost(charID, entry.boost, charID, charID)
+            end
         end
     end
 end
@@ -58,24 +63,26 @@ local function RemoveLoneWolfStatuses(charID)
         "GOON_LONE_WOLF_SE_BUFFS" -- Add buffs status to be removed here
     }
 
-    -- Handle removal of status effects and buffs
+    -- Handle removal of status effects and boosts
     for _, status in ipairs(statuses) do
         if Osi.HasActiveStatus(charID, status) == 1 then
             Ext.Utils.Print(string.format("[RemoveLoneWolfStatuses] Removing status %s from %s", status, charID))
-            Osi.RemoveStatus(charID, status)
+            Osi.RemoveStatus(charID, entry.status)
+
+            -- If it's the SE_BUFFS status, remove the associated boosts
+            if status == "GOON_LONE_WOLF_SE_BUFFS" then
+                local boosts = {
+                    "IncreaseMaxHP(30%)",
+                    "DamageReduction(All,Half)"
+                }
+                for _, boost in ipairs(boosts) do
+                    Ext.Utils.Print("[RemoveLoneWolfStatuses] Removing boost:", boost, "from", charID)
+                    Osi.RemoveBoosts(charID, boost, 0, charID, charID)
+                end
+            end
         else
             Ext.Utils.Print(string.format("[RemoveLoneWolfStatuses] Status %s not active on %s", status, charID))
         end
-    end
-
-    -- Remove Lone Wolf related buffs if present
-    local extraBoosts = {
-        { effect = "IncreaseMaxHP(30%)", boost = "IncreaseMaxHP(30%)" },
-        { effect = "DamageReduction(All,Half)", boost = "DamageReduction(All,Half)" },
-    }
-
-    for _, extraBoost in ipairs(extraBoosts) do
-        Osi.RemoveBoosts(charID, extraBoost.boost, 0, charID, charID)
     end
 end
 
@@ -133,6 +140,7 @@ local function UpdateLoneWolfStatus()
                     Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1, 1)
                 end
 
+                -- Apply stat boosts when Lone Wolf status is active
                 ApplyStatBoosts(charID)
             else
                 if hasStatus then
@@ -140,7 +148,7 @@ local function UpdateLoneWolfStatus()
                     Osi.RemoveStatus(charID, LONE_WOLF_STATUS)
                 end
 
-                -- Explicitly remove the Lone Wolf SE Buffs status and its associated boosts
+                -- Explicitly remove the Lone Wolf SE Buffs status
                 RemoveLoneWolfStatuses(charID)
             end
         end
