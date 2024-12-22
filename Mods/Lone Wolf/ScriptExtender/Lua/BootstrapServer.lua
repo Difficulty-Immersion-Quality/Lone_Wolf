@@ -2,6 +2,7 @@ local LONE_WOLF_STATUS = "GOON_LONE_WOLF_STATUS"
 local LONE_WOLF_PASSIVE = "Goon_Lone_Wolf_Passive_Dummy"
 local GOON_LONE_WOLF_SE_BUFFS = "GOON_LONE_WOLF_SE_BUFFS" -- Dummy status for boost application
 local LONE_WOLF_THRESHOLD = 2 -- Max party size for Lone Wolf to apply
+local SITOUT_VANISH_STATUS = "SITOUT_ONCOMBATSTART_APPLIER_TECHNICAL"
 
 local statBoosts = {
     { passive = "Goon_Lone_Wolf_Strength", status = "GOON_LONE_WOLF_STRENGTH_STATUS" },
@@ -50,8 +51,9 @@ local function updateLoneWolfStatus()
     -- Identify valid players
     for _, playerEntry in pairs(Players) do
         local charID = playerEntry[1]
-        table.insert(validPlayers, charID)
-        --Ext.Utils.Print(string.format("[DEBUG] Valid player: %s", charID))
+        if Osi.HasActiveStatus(charID, SITOUT_VANISH_STATUS) == 0 then
+            table.insert(validPlayers, charID)
+        end
     end
 
     local partySize = #validPlayers
@@ -60,7 +62,6 @@ local function updateLoneWolfStatus()
     for _, charID in pairs(validPlayers) do
         local hasPassive = Osi.HasPassive(charID, LONE_WOLF_PASSIVE) == 1
         local hasStatus = Osi.HasActiveStatus(charID, LONE_WOLF_STATUS) == 1
-
         --Ext.Utils.Print(string.format("[DEBUG] Processing character: %s", charID))
         --Ext.Utils.Print(string.format("[DEBUG] Has Lone Wolf Passive: %s, Party Size: %d, Threshold: %d", tostring(hasPassive), partySize, LONE_WOLF_THRESHOLD))
 
@@ -71,7 +72,6 @@ local function updateLoneWolfStatus()
                 Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1, 1)
                 Osi.ApplyStatus(charID, GOON_LONE_WOLF_SE_BUFFS, -1, 1)
             end
-
             applyStatBoosts(charID)
         else
             -- Remove Lone Wolf status, dummy status, and boosts
@@ -80,12 +80,10 @@ local function updateLoneWolfStatus()
                 Osi.RemoveStatus(charID, LONE_WOLF_STATUS)
                 Osi.RemoveStatus(charID, GOON_LONE_WOLF_SE_BUFFS)
             end
-
             removeStatBoosts(charID)
             removeLoneWolfBoosts(charID)
         end
     end
-
     --Ext.Utils.Print("[updateLoneWolfStatus] Update complete.")
 end
 
@@ -118,8 +116,22 @@ Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
     delayedUpdateLoneWolfStatus(character)
 end)
 
+-- Apply Lone Wolf Boosts when the dummy status is applied
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
     if status == GOON_LONE_WOLF_SE_BUFFS then
         applyLoneWolfBoosts(object)
+    end
+end)
+
+-- Recalculate party limit when SITOUT_VANISH_STATUS is applied or removed
+Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
+    if status == SITOUT_VANISH_STATUS then
+        updateLoneWolfStatus()
+    end
+end)
+
+Ext.Osiris.RegisterListener("StatusRemoved", 4, "after", function(object, status, cause, _)
+    if status == SITOUT_VANISH_STATUS then
+        updateLoneWolfStatus()
     end
 end)
