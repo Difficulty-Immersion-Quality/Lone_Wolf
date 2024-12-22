@@ -1,120 +1,125 @@
 local LONE_WOLF_STATUS = "GOON_LONE_WOLF_STATUS"
 local LONE_WOLF_PASSIVE = "Goon_Lone_Wolf_Passive_Dummy"
+local GOON_LONE_WOLF_SE_BUFFS = "GOON_LONE_WOLF_SE_BUFFS" -- Dummy status for boost application
 local LONE_WOLF_THRESHOLD = 2 -- Max party size for Lone Wolf to apply
-local isUpdating = false -- Prevent recursive calls
 
--- Function to apply stat boosts dynamically
-local function ApplyStatBoosts(charID)
-    local statBoosts = {
-        { passive = "Goon_Lone_Wolf_Strength", status = "GOON_LONE_WOLF_STRENGTH_STATUS" },
-        { passive = "Goon_Lone_Wolf_Dexterity", status = "GOON_LONE_WOLF_DEXTERITY_STATUS" },
-        { passive = "Goon_Lone_Wolf_Constitution", status = "GOON_LONE_WOLF_CONSTITUTION_STATUS" },
-        { passive = "Goon_Lone_Wolf_Intelligence", status = "GOON_LONE_WOLF_INTELLIGENCE_STATUS" },
-        { passive = "Goon_Lone_Wolf_Wisdom", status = "GOON_LONE_WOLF_WISDOM_STATUS" },
-        { passive = "Goon_Lone_Wolf_Charisma", status = "GOON_LONE_WOLF_CHARISMA_STATUS" },
-    }
+local statBoosts = {
+    { passive = "Goon_Lone_Wolf_Strength", status = "GOON_LONE_WOLF_STRENGTH_STATUS" },
+    { passive = "Goon_Lone_Wolf_Dexterity", status = "GOON_LONE_WOLF_DEXTERITY_STATUS" },
+    { passive = "Goon_Lone_Wolf_Constitution", status = "GOON_LONE_WOLF_CONSTITUTION_STATUS" },
+    { passive = "Goon_Lone_Wolf_Intelligence", status = "GOON_LONE_WOLF_INTELLIGENCE_STATUS" },
+    { passive = "Goon_Lone_Wolf_Wisdom", status = "GOON_LONE_WOLF_WISDOM_STATUS" },
+    { passive = "Goon_Lone_Wolf_Charisma", status = "GOON_LONE_WOLF_CHARISMA_STATUS" },
+}
 
+local loneWolfBoosts = {
+    { boost = "IncreaseMaxHP(30%)" },
+    { boost = "DamageReduction(All,Half)" },
+}
+
+local function applyStatBoosts(charID)
     for _, boost in ipairs(statBoosts) do
         if Osi.HasPassive(charID, boost.passive) == 1 then
-            Osi.ApplyStatus(charID, boost.status, -1, 1) -- Apply status indefinitely
-        else
-            Osi.RemoveStatus(charID, boost.status) -- Remove status if passive is not present
+            Osi.ApplyStatus(charID, boost.status, -1, 1)
         end
     end
 end
 
-local loneWolfBoosts = {
-    ExtraHP = "IncreaseMaxHP(30%)",
-    DamageReduction = "DamageReduction(All,Half)",
-}
+local function applyLoneWolfBoosts(charID)
+    for _, boost in ipairs(loneWolfBoosts) do
+        Osi.AddBoosts(charID, boost.boost, charID, charID)
+    end
+end
 
--- Function to update Lone Wolf status for all party members
-local function UpdateLoneWolfStatus()
-    if isUpdating then
-        Ext.Utils.Print("[UpdateLoneWolfStatus] Update already in progress. Skipping.")
-        return
+local function removeStatBoosts(charID)
+    for _, boost in ipairs(statBoosts) do
+        Osi.RemoveStatus(charID, boost.status)
+    end
+end
+
+local function removeLoneWolfBoosts(charID)
+    for _, boost in ipairs(loneWolfBoosts) do
+        Osi.RemoveBoosts(charID, boost.boost, 0, charID, charID)
+    end
+end
+
+local function updateLoneWolfStatus()
+    local Players = Osi.DB_Players:Get(nil)
+    local validPlayers = {}
+
+    -- Identify valid players
+    for _, playerEntry in pairs(Players) do
+        local charID = playerEntry[1]
+        table.insert(validPlayers, charID)
+        --Ext.Utils.Print(string.format("[DEBUG] Valid player: %s", charID))
     end
 
-    isUpdating = true
-    Ext.Utils.Print("[UpdateLoneWolfStatus] Starting update...")
+    local partySize = #validPlayers
 
-    local partyMembers = Osi.DB_PartyMembers:Get(nil)
-    local partySize = #partyMembers -- Count total party members
-
-    Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Total party members: %d", partySize))
-
-    -- Loop through all party members
-    for _, member in pairs(partyMembers) do
-        local charID = member[1]
-        Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Processing character: %s", charID))
-
-        -- Check if character has the Lone Wolf passive
+    -- Process each valid player
+    for _, charID in pairs(validPlayers) do
         local hasPassive = Osi.HasPassive(charID, LONE_WOLF_PASSIVE) == 1
         local hasStatus = Osi.HasActiveStatus(charID, LONE_WOLF_STATUS) == 1
 
+        --Ext.Utils.Print(string.format("[DEBUG] Processing character: %s", charID))
+        --Ext.Utils.Print(string.format("[DEBUG] Has Lone Wolf Passive: %s, Party Size: %d, Threshold: %d", tostring(hasPassive), partySize, LONE_WOLF_THRESHOLD))
+
         if hasPassive and partySize <= LONE_WOLF_THRESHOLD then
-            -- Apply status and boosts
+            -- Apply Lone Wolf status and dummy status for boost application
             if not hasStatus then
-                Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Applying Lone Wolf status to %s", charID))
-                Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1, 1) -- Apply status indefinitely
+                --Ext.Utils.Print(string.format("[DEBUG] Applying Lone Wolf status to %s", charID))
+                Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1, 1)
+                Osi.ApplyStatus(charID, GOON_LONE_WOLF_SE_BUFFS, -1, 1)
             end
 
-            for boostName, boost in pairs(loneWolfBoosts) do
-                Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Ensuring %s boost is applied to %s", boostName, charID))
-                Osi.AddBoosts(charID, boost, charID, charID)
-            end
-
-            -- Apply stat boosts dynamically
-            ApplyStatBoosts(charID)
+            applyStatBoosts(charID)
         else
-            -- Remove status and boosts if criteria are not met
+            -- Remove Lone Wolf status, dummy status, and boosts
             if hasStatus then
-                Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Removing Lone Wolf status from %s", charID))
+                --Ext.Utils.Print(string.format("[DEBUG] Removing Lone Wolf status from %s", charID))
                 Osi.RemoveStatus(charID, LONE_WOLF_STATUS)
+                Osi.RemoveStatus(charID, GOON_LONE_WOLF_SE_BUFFS)
             end
 
-            for boostName, boost in pairs(loneWolfBoosts) do
-                Ext.Utils.Print(string.format("[UpdateLoneWolfStatus] Removing %s boost from %s", boostName, charID))
-                Osi.RemoveBoosts(charID, boost, 0, charID, charID)
-            end
-
-            -- Remove stat boosts dynamically
-            ApplyStatBoosts(charID)
+            removeStatBoosts(charID)
+            removeLoneWolfBoosts(charID)
         end
     end
 
-    Ext.Utils.Print("[UpdateLoneWolfStatus] Update complete.")
-    isUpdating = false
+    --Ext.Utils.Print("[updateLoneWolfStatus] Update complete.")
 end
 
--- Event: Party size changes
 Ext.Osiris.RegisterListener("CharacterJoinedParty", 1, "after", function()
-    Ext.Utils.Print("Event triggered: CharacterJoinedParty")
-    UpdateLoneWolfStatus()
+    --Ext.Utils.Print("Event triggered: CharacterJoinedParty")
+    updateLoneWolfStatus()
 end)
 
 Ext.Osiris.RegisterListener("CharacterLeftParty", 1, "after", function()
-    Ext.Utils.Print("Event triggered: CharacterLeftParty")
-    UpdateLoneWolfStatus()
+    --Ext.Utils.Print("Event triggered: CharacterLeftParty")
+    updateLoneWolfStatus()
 end)
 
--- Event: Gameplay starts
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function()
-    Ext.Utils.Print("Event triggered: LevelGameplayStarted")
-    UpdateLoneWolfStatus()
+    --Ext.Utils.Print("Event triggered: LevelGameplayStarted")
+    updateLoneWolfStatus()
 end)
 
--- Function to update Lone Wolf status after a delay for level-ups
-local function DelayedUpdateLoneWolfStatus(character)
-    Ext.Utils.Print(string.format("[DelayedUpdateLoneWolfStatus] Waiting to update Lone Wolf status for character: %s", character))
+-- Delay makes it happen after levelup is finished.
+local function delayedUpdateLoneWolfStatus(character)
+    --Ext.Utils.Print(string.format("[delayedUpdateLoneWolfStatus] Waiting to update Lone Wolf status for character: %s", character))
     Ext.Timer.WaitFor(500, function()
-        Ext.Utils.Print("[DelayedUpdateLoneWolfStatus] Event triggered: LeveledUp (Delayed)")
-        UpdateLoneWolfStatus()
+        --Ext.Utils.Print("[delayedUpdateLoneWolfStatus] Event triggered: LeveledUp (Delayed)")
+        updateLoneWolfStatus()
     end)
 end
 
--- Register listener for "LeveledUp" event
 Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
-    Ext.Utils.Print("Event triggered: LeveledUp")
-    DelayedUpdateLoneWolfStatus(character)
+    --Ext.Utils.Print("Event triggered: LeveledUp")
+    delayedUpdateLoneWolfStatus(character)
+end)
+
+Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
+    if status == GOON_LONE_WOLF_SE_BUFFS then
+        applyLoneWolfBoosts(object)
+    end
 end)
