@@ -27,9 +27,24 @@ local function applyStatBoosts(charID)
 end
 
 local function applyLoneWolfBoosts(charID)
+    local entityHandle = Ext.Entity.UuidToHandle(charID)
+    if not entityHandle or not entityHandle.Health then return end
+
+    local currentHp = entityHandle.Health.Hp
+    local subscription
+
     for _, boost in ipairs(loneWolfBoosts) do
         Osi.AddBoosts(charID, boost.boost, charID, charID)
     end
+
+    -- Ensure health stays consistent and prevent exploitation
+    subscription = Ext.Entity.Subscribe("Health", function(health, _, _)
+        health.Health.Hp = currentHp
+        health:Replicate("Health")
+        if subscription then
+            Ext.Entity.Unsubscribe(subscription)
+        end
+    end, entityHandle)
 end
 
 local function removeStatBoosts(charID)
