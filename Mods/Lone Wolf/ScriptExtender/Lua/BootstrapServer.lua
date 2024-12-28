@@ -144,7 +144,7 @@ Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
         removeLoneWolfBoosts(character)
 
         Ext.Timer.WaitFor(500, function()
-            applyLoneWolfBoosts(character)
+            applyLoneWolfBoostsOnLevelUp(character)
         end)
     end
 end)
