@@ -18,6 +18,9 @@ local loneWolfBoosts = {
     { boost = "DamageReduction(All,Half)" },
 }
 
+-- Track if the boosts have been applied to prevent duplication
+local appliedBoosts = {}
+
 local function applyStatBoosts(charID)
     for _, boost in ipairs(statBoosts) do
         if Osi.HasPassive(charID, boost.passive) == 1 then
@@ -27,6 +30,8 @@ local function applyStatBoosts(charID)
 end
 
 local function applyLoneWolfBoosts(charID)
+    if appliedBoosts[charID] then return end -- Skip if already applied
+
     local entityHandle = Ext.Entity.UuidToHandle(charID)
     if not entityHandle or not entityHandle.Health then return end
 
@@ -37,6 +42,9 @@ local function applyLoneWolfBoosts(charID)
         Osi.AddBoosts(charID, boost.boost, charID, charID)
     end
     
+    -- Mark that the boosts were applied
+    appliedBoosts[charID] = true
+
     -- Ensure health stays consistent and prevent exploitation
     subscription = Ext.Entity.Subscribe("Health", function(health, _, _)
         health.Health.Hp = currentHp
@@ -47,14 +55,15 @@ local function applyLoneWolfBoosts(charID)
     end, entityHandle)
 end
 
-local function applyLoneWolfBoostsOnLevelUp(charID)
-    local entityHandle = Ext.Entity.UuidToHandle(charID)
-    if not entityHandle or not entityHandle.Health then return end
+--local function applyLoneWolfBoostsOnLevelUp(charID)
+    -- Apply the Lone Wolf buffs
+    --for _, boost in ipairs(loneWolfBoosts) do
+        --Osi.AddBoosts(charID, boost.boost, charID, charID)
+    --end
 
-    for _, boost in ipairs(loneWolfBoosts) do
-        Osi.AddBoosts(charID, boost.boost, charID, charID)
-    end
-end
+    -- Mark the buffs as applied for the character during level-up
+    --appliedBoosts[charID] = true
+--end
 
 
 local function removeStatBoosts(charID)
@@ -67,6 +76,9 @@ local function removeLoneWolfBoosts(charID)
     for _, boost in ipairs(loneWolfBoosts) do
         Osi.RemoveBoosts(charID, boost.boost, 0, charID, charID)
     end
+
+    -- Mark that the boosts were removed
+    appliedBoosts[charID] = nil
 end
 
 local function updateLoneWolfStatus()
@@ -87,13 +99,10 @@ local function updateLoneWolfStatus()
     for _, charID in pairs(validPlayers) do
         local hasPassive = Osi.HasPassive(charID, LONE_WOLF_PASSIVE) == 1
         local hasStatus = Osi.HasActiveStatus(charID, LONE_WOLF_STATUS) == 1
-        --Ext.Utils.Print(string.format("[DEBUG] Processing character: %s", charID))
-        --Ext.Utils.Print(string.format("[DEBUG] Has Lone Wolf Passive: %s, Party Size: %d, Threshold: %d", tostring(hasPassive), partySize, LONE_WOLF_THRESHOLD))
 
         if hasPassive and partySize <= LONE_WOLF_THRESHOLD then
             -- Apply Lone Wolf status and dummy status for boost application
             if not hasStatus then
-                --Ext.Utils.Print(string.format("[DEBUG] Applying Lone Wolf status to %s", charID))
                 Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1, 1)
                 Osi.ApplyStatus(charID, GOON_LONE_WOLF_SE_BUFFS, -1, 1)
             end
@@ -102,7 +111,6 @@ local function updateLoneWolfStatus()
         else
             -- Remove Lone Wolf status, dummy status, and boosts
             if hasStatus then
-                --Ext.Utils.Print(string.format("[DEBUG] Removing Lone Wolf status from %s", charID))
                 Osi.RemoveStatus(charID, LONE_WOLF_STATUS)
                 Osi.RemoveStatus(charID, GOON_LONE_WOLF_SE_BUFFS)
             end
@@ -110,7 +118,6 @@ local function updateLoneWolfStatus()
             removeLoneWolfBoosts(charID)
         end
     end
-    --Ext.Utils.Print("[updateLoneWolfStatus] Update complete.")
 end
 
 Ext.Osiris.RegisterListener("CharacterJoinedParty", 1, "after", function()
@@ -149,17 +156,24 @@ end
     --end)
 --end
 
-Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
+--Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
     -- Check if the character has the GOON_LONE_WOLF_SE_BUFFS status before proceeding
-    if Osi.HasActiveStatus(character, GOON_LONE_WOLF_SE_BUFFS) == 1 then
+    --if Osi.HasActiveStatus(character, GOON_LONE_WOLF_SE_BUFFS) == 1 then
         -- Remove and reapply Lone Wolf boosts specifically for level-up
         --removeLoneWolfBoosts(character)
 
-        Ext.Timer.WaitFor(500, function()
-            applyLoneWolfBoostsOnLevelUp(character)
-        end)
-    end
+        --Ext.Timer.WaitFor(500, function()
+            --applyLoneWolfBoostsOnLevelUp(character)
+        --end)
+    --end
+--end)
+
+Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
+    Ext.Timer.WaitFor(500, function()
+        updateLoneWolfStatus()
+    end)
 end)
+
 
 -- Apply Lone Wolf Boosts when the dummy status is applied
 --Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
