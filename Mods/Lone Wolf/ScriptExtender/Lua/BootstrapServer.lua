@@ -36,7 +36,7 @@ local function applyLoneWolfBoosts(charID)
     for _, boost in ipairs(loneWolfBoosts) do
         Osi.AddBoosts(charID, boost.boost, charID, charID)
     end
-    
+
     -- Ensure health stays consistent and prevent exploitation
     subscription = Ext.Entity.Subscribe("Health", function(health, _, _)
         health.Health.Hp = currentHp
@@ -46,16 +46,6 @@ local function applyLoneWolfBoosts(charID)
         end
     end, entityHandle)
 end
-
-local function applyLoneWolfBoostsOnLevelUp(charID)
-    local entityHandle = Ext.Entity.UuidToHandle(charID)
-    if not entityHandle or not entityHandle.Health then return end
-
-    for _, boost in ipairs(loneWolfBoosts) do
-        Osi.AddBoosts(charID, boost.boost, charID, charID)
-    end
-end
-
 
 local function removeStatBoosts(charID)
     for _, boost in ipairs(statBoosts) do
@@ -129,32 +119,25 @@ Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function()
 end)
 
 -- Delay makes it happen after levelup is finished.
---local function delayedUpdateLoneWolfStatus(character)
+local function delayedUpdateLoneWolfStatus(character)
     --Ext.Utils.Print(string.format("[delayedUpdateLoneWolfStatus] Waiting to update Lone Wolf status for character: %s", character))
-    --Ext.Timer.WaitFor(500, function()
+    Ext.Timer.WaitFor(500, function()
         --Ext.Utils.Print("[delayedUpdateLoneWolfStatus] Event triggered: LeveledUp (Delayed)")
-        --updateLoneWolfStatus()
-    --end)
---end
+        updateLoneWolfStatus()
+    end)
+end
 
 Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
-    -- Check if the character has the GOON_LONE_WOLF_SE_BUFFS status before proceeding
-    if Osi.HasActiveStatus(character, GOON_LONE_WOLF_SE_BUFFS) == 1 then
-        -- Remove and reapply Lone Wolf boosts specifically for level-up
-        removeLoneWolfBoosts(character)
-
-        Ext.Timer.WaitFor(500, function()
-            applyLoneWolfBoostsOnLevelUp(character)
-        end)
-    end
+    --Ext.Utils.Print("Event triggered: LeveledUp")
+    delayedUpdateLoneWolfStatus(character)
 end)
 
 -- Apply Lone Wolf Boosts when the dummy status is applied
---Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
-    --if status == GOON_LONE_WOLF_SE_BUFFS then
-        --applyLoneWolfBoosts(object)
-    --end
---end)
+Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
+    if status == GOON_LONE_WOLF_SE_BUFFS then
+        applyLoneWolfBoosts(object)
+    end
+end)
 
 -- Recalculate party limit when SITOUT_VANISH_STATUS is applied or removed
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
