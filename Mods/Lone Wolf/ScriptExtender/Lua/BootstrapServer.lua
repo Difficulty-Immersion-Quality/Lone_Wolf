@@ -88,6 +88,7 @@ local function updateLoneWolfStatus()
                 Osi.ApplyStatus(charID, GOON_LONE_WOLF_SE_BUFFS, -1, 1)
             end
             applyStatBoosts(charID)
+            applyLoneWolfBoosts(charID)
         else
             -- Remove Lone Wolf status, dummy status, and boosts
             if hasStatus then
