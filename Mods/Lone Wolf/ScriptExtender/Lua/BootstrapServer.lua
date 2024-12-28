@@ -98,7 +98,7 @@ local function updateLoneWolfStatus()
                 Osi.ApplyStatus(charID, GOON_LONE_WOLF_SE_BUFFS, -1, 1)
             end
             applyStatBoosts(charID)
-            applyLoneWolfBoosts(charID)
+            --applyLoneWolfBoosts(charID)
         else
             -- Remove Lone Wolf status, dummy status, and boosts
             if hasStatus then
@@ -118,15 +118,27 @@ Ext.Osiris.RegisterListener("CharacterJoinedParty", 1, "after", function()
     updateLoneWolfStatus()
 end)
 
+if Osi.HasActiveStatus(character, GOON_LONE_WOLF_SE_BUFFS) == 1 then
+    applyLoneWolfBoosts(character)
+end
+
 Ext.Osiris.RegisterListener("CharacterLeftParty", 1, "after", function()
     --Ext.Utils.Print("Event triggered: CharacterLeftParty")
     updateLoneWolfStatus()
 end)
 
+if Osi.HasActiveStatus(character, GOON_LONE_WOLF_SE_BUFFS) == 1 then
+    applyLoneWolfBoosts(character)
+end
+
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function()
     --Ext.Utils.Print("Event triggered: LevelGameplayStarted")
     updateLoneWolfStatus()
 end)
+
+if Osi.HasActiveStatus(character, GOON_LONE_WOLF_SE_BUFFS) == 1 then
+    applyLoneWolfBoosts(character)
+end
 
 -- Delay makes it happen after levelup is finished.
 --local function delayedUpdateLoneWolfStatus(character)
@@ -141,7 +153,7 @@ Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
     -- Check if the character has the GOON_LONE_WOLF_SE_BUFFS status before proceeding
     if Osi.HasActiveStatus(character, GOON_LONE_WOLF_SE_BUFFS) == 1 then
         -- Remove and reapply Lone Wolf boosts specifically for level-up
-        removeLoneWolfBoosts(character)
+        --removeLoneWolfBoosts(character)
 
         Ext.Timer.WaitFor(500, function()
             applyLoneWolfBoostsOnLevelUp(character)
@@ -159,12 +171,29 @@ end)
 -- Recalculate party limit when SITOUT_VANISH_STATUS is applied or removed
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
     if status == SITOUT_VANISH_STATUS then
+        -- Recalculate party status when SITOUT_VANISH_STATUS is removed
         updateLoneWolfStatus()
+    end
+
+    if status == GOON_LONE_WOLF_SE_BUFFS then
+        -- Check if the character has GOON_LONE_WOLF_SE_BUFFS before applying boosts
+        if Osi.HasActiveStatus(character, GOON_LONE_WOLF_SE_BUFFS) == 1 then
+            applyLoneWolfBoosts(character)
+        end
     end
 end)
 
 Ext.Osiris.RegisterListener("StatusRemoved", 4, "after", function(object, status, cause, _)
     if status == SITOUT_VANISH_STATUS then
+        -- Recalculate party status when SITOUT_VANISH_STATUS is removed
         updateLoneWolfStatus()
     end
+
+    if status == GOON_LONE_WOLF_SE_BUFFS then
+        -- Check if the character has GOON_LONE_WOLF_SE_BUFFS before applying boosts
+        if Osi.HasActiveStatus(character, GOON_LONE_WOLF_SE_BUFFS) == 1 then
+            applyLoneWolfBoosts(character)
+        end
+    end
 end)
+
