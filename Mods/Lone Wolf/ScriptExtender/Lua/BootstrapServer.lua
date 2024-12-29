@@ -27,6 +27,11 @@ local function applyStatBoosts(charID)
 end
 
 local function applyLoneWolfBoosts(charID)
+    -- Check if the status is already applied
+    if Osi.HasActiveStatus(charID, GOON_LONE_WOLF_SE_BUFFS) == 0 then
+        return -- Status is not active, no boost application
+    end
+
     local entityHandle = Ext.Entity.UuidToHandle(charID)
     if not entityHandle or not entityHandle.Health then return end
 
@@ -37,7 +42,7 @@ local function applyLoneWolfBoosts(charID)
         Osi.AddBoosts(charID, boost.boost, charID, charID)
     end
 
-    -- Ensure health stays consistent and prevent exploitation
+    -- Ensure health remains consistent and prevent exploitation
     subscription = Ext.Entity.Subscribe("Health", function(health, _, _)
         health.Health.Hp = currentHp
         health:Replicate("Health")
@@ -55,7 +60,7 @@ end
 
 local function removeLoneWolfBoosts(charID)
     for _, boost in ipairs(loneWolfBoosts) do
-        Osi.RemoveBoosts(charID, boost.boost, 0, charID, charID)
+        Osi.RemoveBoosts(charID, boost.boost, 0, charID, charID)    
     end
 end
 
@@ -77,22 +82,21 @@ local function updateLoneWolfStatus()
     for _, charID in pairs(validPlayers) do
         local hasPassive = Osi.HasPassive(charID, LONE_WOLF_PASSIVE) == 1
         local hasStatus = Osi.HasActiveStatus(charID, LONE_WOLF_STATUS) == 1
-        --Ext.Utils.Print(string.format("[DEBUG] Processing character: %s", charID))
-        --Ext.Utils.Print(string.format("[DEBUG] Has Lone Wolf Passive: %s, Party Size: %d, Threshold: %d", tostring(hasPassive), partySize, LONE_WOLF_THRESHOLD))
+        Ext.Utils.Print(string.format("[DEBUG] Processing character: %s", charID))
+        Ext.Utils.Print(string.format("[DEBUG] Has Lone Wolf Passive: %s, Party Size: %d, Threshold: %d", tostring(hasPassive), partySize, LONE_WOLF_THRESHOLD))
 
         if hasPassive and partySize <= LONE_WOLF_THRESHOLD then
             -- Apply Lone Wolf status and dummy status for boost application
             if not hasStatus then
-                --Ext.Utils.Print(string.format("[DEBUG] Applying Lone Wolf status to %s", charID))
+                Ext.Utils.Print(string.format("[DEBUG] Applying Lone Wolf status to %s", charID))
                 Osi.ApplyStatus(charID, LONE_WOLF_STATUS, -1, 1)
                 Osi.ApplyStatus(charID, GOON_LONE_WOLF_SE_BUFFS, -1, 1)
             end
             applyStatBoosts(charID)
-            applyLoneWolfBoosts(charID)
         else
             -- Remove Lone Wolf status, dummy status, and boosts
             if hasStatus then
-                --Ext.Utils.Print(string.format("[DEBUG] Removing Lone Wolf status from %s", charID))
+                Ext.Utils.Print(string.format("[DEBUG] Removing Lone Wolf status from %s", charID))
                 Osi.RemoveStatus(charID, LONE_WOLF_STATUS)
                 Osi.RemoveStatus(charID, GOON_LONE_WOLF_SE_BUFFS)
             end
@@ -132,14 +136,6 @@ Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
     delayedUpdateLoneWolfStatus(character)
 end)
 
--- Apply Lone Wolf Boosts when the dummy status is applied
-Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
-    if status == GOON_LONE_WOLF_SE_BUFFS then
-        applyLoneWolfBoosts(object)
-    end
-end)
-
--- Recalculate party limit when SITOUT_VANISH_STATUS is applied or removed
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
     if status == SITOUT_VANISH_STATUS then
         updateLoneWolfStatus()
@@ -149,5 +145,17 @@ end)
 Ext.Osiris.RegisterListener("StatusRemoved", 4, "after", function(object, status, cause, _)
     if status == SITOUT_VANISH_STATUS then
         updateLoneWolfStatus()
+    end
+end)
+
+Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
+    if status == GOON_LONE_WOLF_SE_BUFFS then
+        applyLoneWolfBoosts(object)
+    end
+end)
+
+Ext.Osiris.RegisterListener("StatusRemoved", 4, "after", function(object, status, cause, _)
+    if status == GOON_LONE_WOLF_SE_BUFFS then
+        removeLoneWolfBoosts(object)
     end
 end)
