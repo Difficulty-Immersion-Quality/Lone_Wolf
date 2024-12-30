@@ -118,9 +118,19 @@ Ext.Osiris.RegisterListener("CharacterLeftParty", 1, "after", function()
 end)
 
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function()
-    --Ext.Utils.Print("Event triggered: LevelGameplayStarted")
+    -- Update Lone Wolf status for all players
     updateLoneWolfStatus()
+    
+    -- Reapply Lone Wolf boosts for characters with GOON_LONE_WOLF_SE_BUFFS
+    local Players = Osi.DB_Players:Get(nil)
+    for _, playerEntry in pairs(Players) do
+        local charID = playerEntry[1]
+        if Osi.HasActiveStatus(charID, GOON_LONE_WOLF_SE_BUFFS) == 1 then
+            applyLoneWolfBoosts(charID)
+        end
+    end
 end)
+
 
 -- Delay makes it happen after levelup is finished.
 local function delayedUpdateLoneWolfStatus(character)
