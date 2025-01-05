@@ -126,6 +126,7 @@ Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function()
     for _, playerEntry in pairs(Players) do
         local charID = playerEntry[1]
         if Osi.HasActiveStatus(charID, GOON_LONE_WOLF_SE_BUFFS) == 1 then
+            removeLoneWolfBoosts(charID)
             applyLoneWolfBoosts(charID)
         end
     end
