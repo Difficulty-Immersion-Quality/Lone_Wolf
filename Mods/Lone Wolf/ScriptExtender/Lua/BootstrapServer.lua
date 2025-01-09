@@ -121,17 +121,19 @@ Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function()
     -- Update Lone Wolf status for all players
     updateLoneWolfStatus()
     
-    -- Reapply Lone Wolf boosts for characters with GOON_LONE_WOLF_SE_BUFFS
+    -- Process players with GOON_LONE_WOLF_SE_BUFFS for boost reapplication
     local Players = Osi.DB_Players:Get(nil)
     for _, playerEntry in pairs(Players) do
         local charID = playerEntry[1]
         if Osi.HasActiveStatus(charID, GOON_LONE_WOLF_SE_BUFFS) == 1 then
             removeLoneWolfBoosts(charID)
-            applyLoneWolfBoosts(charID)
+
+            Ext.Timer.WaitFor(500, function()
+                applyLoneWolfBoosts(charID)
+            end)
         end
     end
 end)
-
 
 -- Delay makes it happen after levelup is finished.
 local function delayedUpdateLoneWolfStatus(character)
