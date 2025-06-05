@@ -31,9 +31,29 @@ local function ApplyLoneWolf(charID)
             Osi.ApplyStatus(charID, boost.status, -1, 1)
         end
     end
-    for _, boost in ipairs(loneWolfBoosts) do
-        Osi.AddBoosts(charID, boost.boost, charID, charID)
+
+    -- Preserve HP before applying boosts
+    local entityHandle = Ext.Entity.Get(charID)
+    if entityHandle and entityHandle.Health then
+        local currentHp = entityHandle.Health.Hp
+        local subscription
+        for _, boost in ipairs(loneWolfBoosts) do
+            Osi.AddBoosts(charID, boost.boost, charID, charID)
+        end
+        subscription = Ext.Entity.Subscribe("Health", function(health, _, _)
+            health.Health.Hp = currentHp
+            health:Replicate("Health")
+            if subscription then
+                Ext.Entity.Unsubscribe(subscription)
+            end
+        end, entityHandle)
+    else
+        -- Fallback if entity/health not found
+        for _, boost in ipairs(loneWolfBoosts) do
+            Osi.AddBoosts(charID, boost.boost, charID, charID)
+        end
     end
+
     LoneWolfVars()[charID] = true
 end
 
@@ -104,8 +124,10 @@ local function delayedUpdateLoneWolfStatus(character)
 end
 
 Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
-    Ext.Utils.Print("Event triggered: LeveledUp")
-    delayedUpdateLoneWolfStatus(character)
+    if Osi.IsPlayer(character) == 1 then
+        Ext.Utils.Print("Event triggered: LeveledUp (player)")
+        delayedUpdateLoneWolfStatus(character)
+    end
 end)
 
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
