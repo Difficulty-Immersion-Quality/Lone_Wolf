@@ -102,17 +102,17 @@ function table.find(tbl, val)
 end
 
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function()
-    Ext.Utils.Print("Event triggered: LevelGameplayStarted")
+    -- Ext.Utils.Print("Event triggered: LevelGameplayStarted")
     CheckAndUpdateLoneWolfBoosts()
 end)
 
 Ext.Osiris.RegisterListener("CharacterJoinedParty", 1, "after", function()
-    Ext.Utils.Print("Event triggered: CharacterJoinedParty")
+    -- Ext.Utils.Print("Event triggered: CharacterJoinedParty")
     CheckAndUpdateLoneWolfBoosts()
 end)
 
 Ext.Osiris.RegisterListener("CharacterLeftParty", 1, "after", function()
-    Ext.Utils.Print("Event triggered: CharacterLeftParty")
+    -- Ext.Utils.Print("Event triggered: CharacterLeftParty")
     CheckAndUpdateLoneWolfBoosts()
 end)
 
@@ -125,7 +125,7 @@ end
 
 Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
     if Osi.IsPlayer(character) == 1 then
-        Ext.Utils.Print("Event triggered: LeveledUp (player)")
+        -- Ext.Utils.Print("Event triggered: LeveledUp (player)")
         delayedUpdateLoneWolfStatus(character)
     end
 end)
