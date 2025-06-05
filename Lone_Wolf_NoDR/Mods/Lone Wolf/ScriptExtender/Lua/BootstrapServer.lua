@@ -10,5 +10,5 @@ local opts = {
     SyncOnWrite = false,
     DontCache = false
 }
-Ext.Vars.RegisterModVariable(ModuleUUID, "HasLoneWolf", opts)
+Ext.Vars.RegisterModVariable(ModuleUUID, "LoneWolf", opts)
 Ext.Require("Server/_Core.lua")
