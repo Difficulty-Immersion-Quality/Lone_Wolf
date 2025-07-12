@@ -15,6 +15,7 @@ local statBoosts = {
 
 local loneWolfBoosts = {
     { boost = "IncreaseMaxHP(30%)" },
+    { boost = "DamageReduction(All,Half)" },
 }
 
 local function LoneWolfVars()
