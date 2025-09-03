@@ -42,11 +42,14 @@ local function ApplyLoneWolf(charID)
             Osi.AddBoosts(charID, boost.boost, charID, charID)
         end
         subscription = Ext.Entity.Subscribe("Health", function(health, _, _)
-            health.Health.Hp = currentHp
-            health:Replicate("Health")
-            if subscription then
-                Ext.Entity.Unsubscribe(subscription)
-            end
+            -- Wait a bit longer after the engine's update before restoring HP
+            Ext.Timer.WaitFor(100, function()
+                health.Health.Hp = currentHp
+                health:Replicate("Health")
+                if subscription then
+                    Ext.Entity.Unsubscribe(subscription)
+                end
+            end)
         end, entityHandle)
     else
         -- Fallback if entity/health not found
@@ -84,7 +87,7 @@ local function CheckAndUpdateLoneWolfBoosts()
     for _, charID in ipairs(valid) do
         local hasPassive = Osi.HasPassive(charID, LONE_WOLF_PASSIVE) == 1
         if hasPassive and partySize <= PartyLimit then
-            if not vars[charID] then ApplyLoneWolf(charID) end
+            ApplyLoneWolf(charID) -- Always reapply boosts
         else
             if vars[charID] then RemoveLoneWolf(charID) end
         end
@@ -132,13 +135,13 @@ Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
 end)
 
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
-    if status == GOON_LONE_WOLF_SE_BUFFS or status == SITOUT_VANISH_STATUS then
+    if status == SITOUT_VANISH_STATUS then
         CheckAndUpdateLoneWolfBoosts(object)
     end
 end)
 
 Ext.Osiris.RegisterListener("StatusRemoved", 4, "after", function(object, status, cause, _)
-    if status == GOON_LONE_WOLF_SE_BUFFS or status == SITOUT_VANISH_STATUS then
+    if status == SITOUT_VANISH_STATUS then
         CheckAndUpdateLoneWolfBoosts(object)
     end
 end)
