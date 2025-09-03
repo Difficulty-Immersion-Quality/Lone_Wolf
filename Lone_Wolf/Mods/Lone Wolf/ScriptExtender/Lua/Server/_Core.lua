@@ -135,13 +135,13 @@ Ext.Osiris.RegisterListener("LeveledUp", 1, "after", function(character)
 end)
 
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(object, status, cause, _)
-    if status == GOON_LONE_WOLF_SE_BUFFS or status == SITOUT_VANISH_STATUS then
+    if status == SITOUT_VANISH_STATUS then
         CheckAndUpdateLoneWolfBoosts(object)
     end
 end)
 
 Ext.Osiris.RegisterListener("StatusRemoved", 4, "after", function(object, status, cause, _)
-    if status == GOON_LONE_WOLF_SE_BUFFS or status == SITOUT_VANISH_STATUS then
+    if status == SITOUT_VANISH_STATUS then
         CheckAndUpdateLoneWolfBoosts(object)
     end
 end)
