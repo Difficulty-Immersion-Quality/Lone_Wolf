@@ -1,6 +1,5 @@
 ---@diagnostic disable: undefined-field
 
-LoneWolf = LoneWolf or {}
 LoneWolf.Config = LoneWolf.Config or {}
 local Config = LoneWolf.Config
 
@@ -23,30 +22,22 @@ Config.default = {
     carryMultiplier = 2.0,
 }
 
-function Config.DeepCopy(original)
-    if type(original) ~= "table" then return original end
-    local copy = {}
-    for key, value in pairs(original) do
-        copy[key] = Config.DeepCopy(value)
-    end
-    return copy
-end
-
 function Config.ApplyDefaults(cfg)
-    local data = Config.DeepCopy(Config.default)
-    for key in pairs(Config.default) do
+    local data = {}
+    for key, value in pairs(Config.default) do
         if cfg[key] ~= nil then
             data[key] = cfg[key]
+        else
+            data[key] = value
         end
     end
-
     return data
 end
 
 function Config.Read()
     local file = Ext.IO.LoadFile(Config.FILE)
     if not file or file == "" then
-        local fresh = Config.DeepCopy(Config.default)
+        local fresh = Config.ApplyDefaults({})
         Ext.IO.SaveFile(Config.FILE, Ext.Json.Stringify(fresh))
         return fresh
     end

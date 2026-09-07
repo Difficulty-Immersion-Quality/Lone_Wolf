@@ -1,4 +1,5 @@
 -- Lone Wolf shared initialization
+LoneWolf = LoneWolf or {}
 Ext.Require("Shared/Config.lua")
 Ext.Require("Shared/Translator.lua")
 
